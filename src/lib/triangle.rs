@@ -1,3 +1,5 @@
+use crate::{into_polygons::IntoPolygons, scalable::Scalable};
+
 use super::{
     point::Point,
     traits::{structifyable::Structifyable, vectorizable::Vectorizable},
@@ -40,5 +42,26 @@ impl Structifyable<Vec4<Vec4<f64>>> for Triangle {
             b: Point::from_vector(&vector[1]),
             c: Point::from_vector(&vector[2]),
         }
+    }
+}
+
+impl IntoPolygons<[[f64; 2]; 3]> for Triangle {
+    fn into_polygon(&self) -> [[f64; 2]; 3] {
+        let a = self.a;
+        let b = self.b;
+        let c = self.c;
+
+        let polygon = [[a.x, a.y], [b.x, b.y], [c.x, c.y]];
+        polygon
+    }
+}
+
+impl Scalable for Triangle {
+    fn scale(&mut self, factor: f64) -> Self {
+        self.a = self.a.scale(factor);
+        self.b = self.b.scale(factor);
+        self.c = self.c.scale(factor);
+
+        *self
     }
 }

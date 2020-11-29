@@ -5,6 +5,7 @@ pub mod point;
 pub mod traits;
 pub mod triangle;
 pub mod types;
+pub mod window;
 
 pub use matrix::*;
 pub use mesh::*;
@@ -12,6 +13,7 @@ pub use point::*;
 pub use traits::*;
 pub use triangle::*;
 pub use types::*;
+pub use window::*;
 
 #[cfg(test)]
 mod tests {
@@ -26,8 +28,8 @@ mod tests {
 
     #[test]
     fn mesh_works() {
-        let mesh: Mesh<Triangle> = Mesh::new(get_triangles());
-        let mesh2: Mesh<Triangle> = Mesh::new(get_triangles());
+        let mesh: Mesh<[Triangle; 12]> = Mesh::new(get_triangles());
+        let mesh2: Mesh<[Triangle; 12]> = Mesh::new(get_triangles());
 
         assert_eq!(mesh, mesh2);
     }
@@ -48,8 +50,8 @@ mod tests {
         assert_eq!(triangle, triangle2);
     }
 
-    fn get_triangles() -> Vec<Triangle> {
-        vec![
+    fn get_triangles() -> [Triangle; 12] {
+        [
             // South
             Triangle::new(
                 Point::new(0.0, 0.0, 0.0),

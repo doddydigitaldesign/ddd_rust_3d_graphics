@@ -1,3 +1,5 @@
+use crate::scalable::Scalable;
+
 use super::{
     traits::{structifyable::Structifyable, vectorizable::Vectorizable},
     types::vector::{Vec3, Vec4},
@@ -22,15 +24,6 @@ impl Vectorizable<Vec3<f64>> for Point {
     }
 }
 
-// impl Structifyable<Vec3<f64>> for Point {
-//     fn from_vector(vector: &Vec3<f64>) -> Point {
-//         Point {
-//             x: vector[0],
-//             y: vector[1],
-//             z: vector[2],
-//         }
-//     }
-// }
 impl Structifyable<Vec4<f64>> for Point {
     fn from_vector(vector: &Vec4<f64>) -> Point {
         Point {
@@ -38,5 +31,15 @@ impl Structifyable<Vec4<f64>> for Point {
             y: vector[1],
             z: vector[2],
         }
+    }
+}
+
+impl Scalable for Point {
+    fn scale(&mut self, factor: f64) -> Self {
+        self.x = self.x * factor;
+        self.y = self.y * factor;
+        self.z = self.z * factor;
+
+        *self
     }
 }

@@ -10,4 +10,4 @@ name = "ddd_rust_3d_graphics"
 path = "src/lib/lib.rs"
 
 [dependencies]
-winit = "*"
+piston_window = "0.116.0"
