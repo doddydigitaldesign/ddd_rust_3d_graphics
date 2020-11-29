@@ -5,6 +5,9 @@ name = "ddd_rust_3d_graphics"
 version = "0.1.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "ddd_rust_3d_graphics"
+path = "src/lib/lib.rs"
 
 [dependencies]
-piston_window = "*"
+winit = "*"

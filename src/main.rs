@@ -1,12 +1,8 @@
 #![feature(min_const_generics)]
-mod structs;
-use structs::{
-    matrix::*,
-    mesh::Mesh,
-    point::Point,
-    traits::{structifyable::*, vectorizable::*},
-    triangle::*,
-    types::vector::Vec4,
+
+extern crate ddd_rust_3d_graphics;
+use ddd_rust_3d_graphics::{
+    traits::structifyable::*, traits::vectorizable::*, vector::Vec4, Matrix, Mesh, Point, Triangle,
 };
 
 fn main() {

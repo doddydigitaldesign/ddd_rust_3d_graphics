@@ -1,4 +1,5 @@
-use super::types::matrix_sizes::Mat4By4;
+use crate::matrix_sizes::Mat4By4;
+
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub struct Matrix<const R: usize, const C: usize> {
     pub data: [[f64; R]; C],

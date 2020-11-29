@@ -1,4 +1,4 @@
-use crate::structs::matrix::Matrix;
+use crate::Matrix;
 
 pub type Mat2By2 = Matrix<2, 2>;
 pub type Mat3By2 = Matrix<3, 2>;
