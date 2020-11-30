@@ -1,13 +1,16 @@
 // #![feature(min_const_generics)]
 
 extern crate ddd_rust_3d_graphics;
+
 use ddd_rust_3d_graphics::{
-    coordinate_system::Coordinate, create_window, into_polygons::IntoPolygons, scalable::Scalable,
-    traits::structifyable::*, traits::vectorizable::*, vector::Vec4, Matrix, Mesh, Point, Triangle,
+    create_window, get_projection, into_polygons::IntoPolygons, traits::structifyable::*,
+    traits::vectorizable::*, vector::Vec4, Mesh, Point, Triangle,
 };
 
 extern crate piston_window;
 use piston_window::*;
+extern crate vecmath;
+use vecmath::col_mat4_transform;
 
 pub fn get_cube_triangles() -> [Triangle; 12] {
     let triangles: [Triangle; 12] = [
@@ -93,42 +96,26 @@ fn main() {
     const F_FIELD_OF_VIEW: f64 = 90.0;
     const F_ASPECT_RATIO: f64 = (SCREEN_WIDTH as f64) / (SCREEN_HEIGHT as f64);
 
-    let f_field_of_view_radians: f64 =
-        1.0 / (F_FIELD_OF_VIEW * 0.5 / 180.0 * std::f64::consts::PI).tan();
-
-    let matrix: Matrix<4, 4> = Matrix::new();
-
-    let projection: Matrix<4, 4> = matrix.get_projection(
-        F_ASPECT_RATIO,
-        f_field_of_view_radians,
-        F_FAR_PLANE,
-        F_NEAR_PLANE,
-    );
-
-    let rotation_x: Matrix<4, 4> = matrix.get_rotation(Coordinate::X, 45f64);
-    let rotation_y: Matrix<4, 4> = matrix.get_rotation(Coordinate::Y, 45f64);
-
-    // let translation = Point::new(100f64, 100f64, 0f64);
+    let projection = get_projection(F_ASPECT_RATIO, F_FIELD_OF_VIEW, F_FAR_PLANE, F_NEAR_PLANE);
     let translation = math::translate([100f64, 100f64]);
 
     let mut projected_triangles = [[[0f64; 4]; 4]; 12];
-    for mesh_triangle_index in 0..cube_mesh.items.len() {
-        let mesh_triangle = cube_mesh.items[mesh_triangle_index].to_vector();
+    for i in 0..cube_mesh.items.len() {
+        let mesh_triangle = cube_mesh.items[i].to_vector();
         let mut projected_triangle: Vec4<Vec4<f64>> = [[0f64; 4]; 4];
-        for vertex_index in 0..mesh_triangle.len() {
-            let triangle_point = &mesh_triangle[vertex_index];
-            let vec4 = [triangle_point[0], triangle_point[1], triangle_point[2], 0.0];
-            let vec4_rotated = rotation_y.multiply_vector(&vec4);
-            let vec4_projected = projection.multiply_vector(&vec4_rotated);
-            println!(
-                "original vector:{}\n rotated vector: {}\n projected vector: {}",
-                format!("{:?}", vec4),
-                format!("{:?}", vec4_rotated),
-                format!("{:?}", vec4_projected)
+        for j in 0..mesh_triangle.len() {
+            let triangle_point = mesh_triangle[j];
+            projected_triangle[j] = col_mat4_transform(
+                projection,
+                [
+                    triangle_point[0],
+                    triangle_point[1],
+                    triangle_point[2],
+                    1f64,
+                ],
             );
-            projected_triangle[vertex_index] = vec4_projected;
         }
-        projected_triangles[mesh_triangle_index] = projected_triangle;
+        projected_triangles[i] = projected_triangle;
     }
 
     // Open a window and draw stuff
@@ -140,27 +127,24 @@ fn main() {
 
     // Add a projection of the cube to the window
     for i in 0..12 {
-        let mut item = projected_mesh.items[i];
-        polygons1[i] = item.scale(100f64).into_polygon();
-        polygons1[i][0] = math::transform_pos(translation, polygons1[i][0]);
-        polygons1[i][1] = math::transform_pos(translation, polygons1[i][1]);
-        polygons1[i][2] = math::transform_pos(translation, polygons1[i][2]);
+        let item = projected_mesh.items[i];
+        polygons1[i] = item.into_polygon();
+        for j in 0..3 {
+            polygons1[i][j] = math::transform_pos(translation, polygons1[i][j]);
+        }
     }
 
     // Add another, slightly bigger projection of the cube
     for i in 0..12 {
-        let mut item = projected_mesh.items[i];
-        polygons2[i] = item.scale(200f64).into_polygon();
+        let item = projected_mesh.items[i];
+        polygons2[i] = item.into_polygon();
 
-        polygons2[i][0] = math::transform_vec(math::rotate_radians(45f64), polygons2[i][0]);
-        polygons2[i][1] = math::transform_vec(math::rotate_radians(45f64), polygons2[i][1]);
-        polygons2[i][2] = math::transform_vec(math::rotate_radians(45f64), polygons2[i][2]);
-
-        polygons2[i][0] = math::transform_pos(math::translate([600f64, 100f64]), polygons2[i][0]);
-        polygons2[i][1] = math::transform_pos(math::translate([600f64, 100f64]), polygons2[i][1]);
-        polygons2[i][2] = math::transform_pos(math::translate([600f64, 100f64]), polygons2[i][2]);
+        for j in 0..3 {
+            polygons2[i][j] = math::transform_vec(math::rotate_radians(180f64), polygons2[i][j]);
+            polygons2[i][j] =
+                math::transform_pos(math::translate([700f64, 700f64]), polygons2[i][j]);
+        }
     }
-    // println!("polygons: {}", format!("{:#?}", polygons));
 
     // Draw
     while let Some(e) = window.next() {

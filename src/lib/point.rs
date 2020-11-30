@@ -1,4 +1,4 @@
-use crate::scalable::Scalable;
+use crate::{scalable::Scalable, vector::Vec2};
 
 use super::{
     traits::{structifyable::Structifyable, vectorizable::Vectorizable},
@@ -19,6 +19,10 @@ impl Point {
 
     pub fn add(&self, other: &Point) -> Point {
         Point::new(self.x + other.x, self.y + other.y, self.z + other.z)
+    }
+
+    pub fn to_vector2(&self) -> Vec2<f64> {
+        [self.x, self.y]
     }
 }
 

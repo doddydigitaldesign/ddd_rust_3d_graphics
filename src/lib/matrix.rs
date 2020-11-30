@@ -1,3 +1,5 @@
+use camera_controllers::CameraPerspective;
+
 use crate::{coordinate_system::Coordinate, matrix_sizes::Mat4By4};
 
 #[derive(Debug, PartialEq, Clone, Copy)]
@@ -10,25 +12,6 @@ impl<const R: usize, const C: usize> Matrix<R, C> {
         Matrix {
             data: [[0f64; R]; C],
         }
-    }
-
-    pub fn get_projection(
-        &self,
-        f_aspect_ratio: f64,
-        f_field_of_view_radians: f64,
-        f_far_plane: f64,
-        f_near_plane: f64,
-    ) -> Mat4By4 {
-        let mut data = [[0f64; 4]; 4];
-
-        data[0][0] = f_aspect_ratio * f_field_of_view_radians;
-        data[1][1] = f_field_of_view_radians;
-        data[2][2] = f_far_plane / (f_far_plane - f_near_plane);
-        data[3][2] = (-f_far_plane * f_near_plane) / (f_far_plane - f_near_plane);
-        data[2][3] = 1.0f64;
-        data[3][3] = 0.0f64;
-
-        return Matrix { data };
     }
 
     pub fn get_rotation(&self, axis: Coordinate, angle: f64) -> Mat4By4 {
@@ -80,4 +63,20 @@ impl<const R: usize, const C: usize> Matrix<R, C> {
 
         return output_vec;
     }
+}
+
+pub fn get_projection(
+    f_aspect_ratio: f64,
+    f_field_of_view_radians: f64,
+    f_far_plane: f64,
+    f_near_plane: f64,
+) -> [[f64; 4]; 4] {
+    let projection = CameraPerspective {
+        aspect_ratio: f_aspect_ratio,
+        far_clip: f_far_plane,
+        fov: f_field_of_view_radians * 180f64,
+        near_clip: f_near_plane,
+    }
+    .projection();
+    projection
 }

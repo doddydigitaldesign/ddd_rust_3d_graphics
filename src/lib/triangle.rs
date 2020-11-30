@@ -58,10 +58,14 @@ impl IntoPolygons<[[f64; 2]; 3]> for Triangle {
 
 impl Scalable for Triangle {
     fn scale(&mut self, factor: f64) -> Self {
-        self.a = self.a.scale(factor);
-        self.b = self.b.scale(factor);
-        self.c = self.c.scale(factor);
+        // self.a = self.a.scale(factor);
+        // self.b = self.b.scale(factor);
+        // self.c = self.c.scale(factor);
 
-        *self
+        Self {
+            a: self.a.scale(factor),
+            b: self.b.scale(factor),
+            c: self.c.scale(factor),
+        }
     }
 }

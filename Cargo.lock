@@ -101,6 +101,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "08c48aae112d48ed9f069b33538ea9e3e90aa263cfa3d1c24309612b1f7472de"
 
 [[package]]
+name = "camera_controllers"
+version = "0.32.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "832c5e36b91a2cd7d29f4fe76b1464b1288326f450bc829cf75b62fc4a1fed26"
+dependencies = [
+ "bitflags",
+ "piston3d-cam",
+ "pistoncore-input",
+ "quaternion",
+ "vecmath",
+]
+
+[[package]]
 name = "cc"
 version = "1.0.65"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -251,7 +264,9 @@ dependencies = [
 name = "ddd_rust_3d_graphics"
 version = "0.1.0"
 dependencies = [
+ "camera_controllers",
  "piston_window",
+ "vecmath",
 ]
 
 [[package]]
@@ -881,6 +896,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "piston3d-cam"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c29bb5a44b7cf1b86c133c3dfa734e81f1cfb1347e4ad7d48b611f28d7b75120"
+dependencies = [
+ "quaternion",
+ "vecmath",
+]
+
+[[package]]
 name = "piston_window"
 version = "0.116.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -975,6 +1000,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e0704ee1a7e00d7bb417d0770ea303c1bccbabf0ef1667dae92b5967f5f8a71"
 dependencies = [
  "unicode-xid 0.2.1",
+]
+
+[[package]]
+name = "quaternion"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "098443236d1445368525aa1874295cb9d9fc7699b52907c78692f0b18bd8c216"
+dependencies = [
+ "vecmath",
 ]
 
 [[package]]
