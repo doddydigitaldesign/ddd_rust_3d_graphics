@@ -10,6 +10,6 @@ name = "ddd_rust_3d_graphics"
 path = "src/lib/lib.rs"
 
 [dependencies]
-camera_controllers = "*"
+camera_controllers = "0.32.0"
 piston_window = "0.116.0"
-vecmath = "*"
+vecmath = "1.0.0"
