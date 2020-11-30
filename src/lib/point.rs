@@ -16,6 +16,10 @@ impl Point {
     pub fn new(x: f64, y: f64, z: f64) -> Point {
         Point { x, y, z }
     }
+
+    pub fn add(&self, other: &Point) -> Point {
+        Point::new(self.x + other.x, self.y + other.y, self.z + other.z)
+    }
 }
 
 impl Vectorizable<Vec3<f64>> for Point {

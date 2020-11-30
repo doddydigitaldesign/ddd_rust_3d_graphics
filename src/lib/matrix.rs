@@ -1,4 +1,4 @@
-use crate::matrix_sizes::Mat4By4;
+use crate::{coordinate_system::Coordinate, matrix_sizes::Mat4By4};
 
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub struct Matrix<const R: usize, const C: usize> {
@@ -29,6 +29,41 @@ impl<const R: usize, const C: usize> Matrix<R, C> {
         data[3][3] = 0.0f64;
 
         return Matrix { data };
+    }
+
+    pub fn get_rotation(&self, axis: Coordinate, angle: f64) -> Mat4By4 {
+        match axis {
+            Coordinate::X => {
+                return Matrix {
+                    data: [
+                        [1f64, 0f64, 0f64, 0f64],
+                        [0f64, angle.cos(), -angle.sin(), 0f64],
+                        [0f64, angle.sin(), angle.cos(), 0f64],
+                        [0f64, 0f64, 0f64, 0f64],
+                    ],
+                }
+            }
+            Coordinate::Y => {
+                return Matrix {
+                    data: [
+                        [angle.cos(), 0f64, angle.sin(), 0f64],
+                        [0f64, 1f64, 0f64, 0f64],
+                        [-angle.sin(), 0f64, angle.cos(), 0f64],
+                        [0f64, 0f64, 0f64, 0f64],
+                    ],
+                }
+            }
+            Coordinate::Z => {
+                return Matrix {
+                    data: [
+                        [angle.cos(), -angle.sin(), 0f64, 0f64],
+                        [angle.sin(), angle.cos(), 0f64, 0f64],
+                        [0f64, 0f64, 1f64, 0f64],
+                        [0f64, 0f64, 0f64, 0f64],
+                    ],
+                }
+            }
+        }
     }
 
     pub fn multiply_vector(&self, vector: &[f64; R]) -> [f64; R] {
