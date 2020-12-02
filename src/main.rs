@@ -5,10 +5,9 @@ extern crate piston_window;
 extern crate vecmath;
 
 use ddd_rust_3d_graphics::{
-    create_window, get_projection, traits::structifyable::*, Mesh, Point, Triangle,
+    create_window, get_projection, traits::structifyable::*, Mesh, Triangle,
 };
 
-use math::{rotate_radians, transform_pos};
 use piston_window::*;
 use utils::{get_cube_colors, get_transformed_mesh, project_mesh, transform_cube};
 
