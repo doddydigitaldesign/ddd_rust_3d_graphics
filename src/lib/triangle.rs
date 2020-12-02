@@ -1,6 +1,4 @@
-use piston_window::types::Polygons;
-
-use crate::{drawable::Drawable, into_polygons::IntoPolygons, scalable::Scalable};
+use crate::{into_polygons::IntoPolygons, scalable::Scalable};
 
 use super::{
     point::Point,
