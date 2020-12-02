@@ -1,4 +1,6 @@
-use crate::{into_polygons::IntoPolygons, scalable::Scalable};
+use piston_window::types::Polygons;
+
+use crate::{drawable::Drawable, into_polygons::IntoPolygons, scalable::Scalable};
 
 use super::{
     point::Point,
@@ -26,15 +28,6 @@ impl Vectorizable<Vec3<Vec3<f64>>> for Triangle {
     }
 }
 
-// impl Structifyable<Vec3<Vec3<f64>>> for Triangle {
-//     fn from_vector(vector: &Vec3<Vec3<f64>>) -> Self {
-//         Triangle {
-//             a: Point::from_vector(&vector[0]),
-//             b: Point::from_vector(&vector[1]),
-//             c: Point::from_vector(&vector[2]),
-//         }
-//     }
-// }
 impl Structifyable<Vec4<Vec4<f64>>> for Triangle {
     fn from_vector(vector: &Vec4<Vec4<f64>>) -> Self {
         Triangle {
@@ -57,12 +50,8 @@ impl IntoPolygons<[[f64; 2]; 3]> for Triangle {
 }
 
 impl Scalable for Triangle {
-    fn scale(&mut self, factor: f64) -> Self {
-        // self.a = self.a.scale(factor);
-        // self.b = self.b.scale(factor);
-        // self.c = self.c.scale(factor);
-
-        Self {
+    fn scale(&self, factor: f64) -> Triangle {
+        Triangle {
             a: self.a.scale(factor),
             b: self.b.scale(factor),
             c: self.c.scale(factor),

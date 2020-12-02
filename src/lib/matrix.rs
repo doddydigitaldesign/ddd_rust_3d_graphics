@@ -80,3 +80,69 @@ pub fn get_projection(
     .projection();
     projection
 }
+
+pub fn get_transposed<const M: usize, const N: usize>(matrix: &[[f64; M]; N]) -> [[f64; N]; M] {
+    let mut transposed: [[f64; N]; M] = [[0f64; N]; M];
+    // i < N
+    for (i_rows, row_i) in matrix.iter().enumerate() {
+        // j < M
+        for (i_cols, col_i) in row_i.iter().enumerate() {
+            transposed[i_cols][i_rows] = 0f64 + col_i;
+        }
+    }
+
+    transposed
+}
+
+pub fn matrix_mul_self<const M: usize, const N: usize>(matrix: &[[f64; M]; N]) -> [[f64; M]; M] {
+    let mut out: [[f64; M]; M] = [[0f64; M]; M];
+
+    let transposed = get_transposed::<M, N>(matrix);
+
+    for i in 0..transposed.len() {
+        for j in 0..transposed.len() {
+            out[i][j] = dot_product(&transposed[j], &transposed[i]);
+        }
+    }
+
+    out
+}
+
+pub fn dot_product<const N: usize>(vector1: &[f64; N], vector2: &[f64; N]) -> f64 {
+    let mut out: f64 = 0f64;
+
+    for (i, elem) in vector1.iter().enumerate() {
+        out += elem * vector2[i];
+    }
+
+    out
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn matrix_transpose_works() {
+        let matrix: [[f64; 3]; 2] = [[1f64, 2f64, 3f64], [4f64, 5f64, 6f64]];
+
+        let result = get_transposed::<3, 2>(&matrix);
+
+        let correct = [[1f64, 4f64], [2f64, 5f64], [3f64, 6f64]];
+
+        assert_eq!(result, correct);
+    }
+    #[test]
+    fn matrix_mul_self_works() {
+        let matrix: [[f64; 3]; 2] = [[1f64, 2f64, 3f64], [4f64, 5f64, 6f64]];
+
+        let result = matrix_mul_self(&matrix);
+
+        let correct = [
+            [17f64, 22f64, 27f64],
+            [22f64, 29f64, 36f64],
+            [27f64, 36f64, 45f64],
+        ];
+
+        assert_eq!(result, correct);
+    }
+}

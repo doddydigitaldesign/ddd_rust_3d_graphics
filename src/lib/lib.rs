@@ -1,6 +1,8 @@
 #![feature(min_const_generics)]
+
 pub mod matrix;
 pub mod mesh;
+pub mod plane;
 pub mod point;
 pub mod traits;
 pub mod triangle;
@@ -9,6 +11,7 @@ pub mod window;
 
 pub use matrix::*;
 pub use mesh::*;
+pub use plane::*;
 pub use point::*;
 pub use traits::*;
 pub use triangle::*;

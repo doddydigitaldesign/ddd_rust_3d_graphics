@@ -43,11 +43,11 @@ impl Structifyable<Vec4<f64>> for Point {
 }
 
 impl Scalable for Point {
-    fn scale(&mut self, factor: f64) -> Self {
-        self.x = self.x * factor;
-        self.y = self.y * factor;
-        self.z = self.z * factor;
-
-        *self
+    fn scale(&self, factor: f64) -> Point {
+        Point {
+            x: self.x * factor,
+            y: self.y * factor,
+            z: self.z * factor,
+        }
     }
 }

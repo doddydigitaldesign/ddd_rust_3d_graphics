@@ -1,3 +1,3 @@
 pub trait Scalable {
-    fn scale(&mut self, factor: f64) -> Self;
+    fn scale(&self, factor: f64) -> Self;
 }

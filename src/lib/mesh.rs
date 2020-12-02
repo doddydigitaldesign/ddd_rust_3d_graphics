@@ -39,8 +39,8 @@ impl Structifyable<[Vec4<Vec4<f64>>; 12]> for Mesh<[Triangle; 12]> {
             Point::new(0.0, 0.0, 0.0),
             Point::new(0.0, 0.0, 0.0),
         ); 12];
-        for item in 0..vector.len() {
-            tmp[item] = Triangle::from_vector(&vector[item]);
+        for (i, item) in vector.iter().enumerate() {
+            tmp[i] = Triangle::from_vector(&item);
         }
         Mesh { items: tmp }
     }
