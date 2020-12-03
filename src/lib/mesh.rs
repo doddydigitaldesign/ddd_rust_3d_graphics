@@ -32,13 +32,13 @@ impl Vectorizable<[Vec3<Vec3<f64>>; 12]> for Mesh<[Triangle; 12]> {
     }
 }
 
-impl Structifyable<[Vec4<Vec4<f64>>; 12]> for Mesh<[Triangle; 12]> {
-    fn from_vector(vector: &[Vec4<Vec4<f64>>; 12]) -> Self {
-        let mut tmp: [Triangle; 12] = [Triangle::new(
+impl<const N: usize> Structifyable<[Vec4<Vec4<f64>>; N]> for Mesh<[Triangle; N]> {
+    fn from_vector(vector: &[Vec4<Vec4<f64>>; N]) -> Self {
+        let mut tmp: [Triangle; N] = [Triangle::new(
             Point::new(0.0, 0.0, 0.0),
             Point::new(0.0, 0.0, 0.0),
             Point::new(0.0, 0.0, 0.0),
-        ); 12];
+        ); N];
         for (i, item) in vector.iter().enumerate() {
             tmp[i] = Triangle::from_vector(&item);
         }

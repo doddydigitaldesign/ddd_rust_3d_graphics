@@ -4,12 +4,10 @@ extern crate ddd_rust_3d_graphics;
 extern crate piston_window;
 extern crate vecmath;
 
-use ddd_rust_3d_graphics::{
-    create_window, get_projection, traits::structifyable::*, Mesh, Triangle,
-};
+use ddd_rust_3d_graphics::{create_window, get_projection, Mesh, Triangle};
 
 use piston_window::*;
-use utils::{get_cube_colors, get_transformed_mesh, project_mesh, transform_cube};
+use utils::{get_cube_colors, get_polygons_from_mesh, transform_cube_loop, transform_cube_scroll};
 
 mod utils;
 
@@ -32,13 +30,22 @@ fn main() {
     // Draw
     while let Some(e) = window.next() {
         match e {
-            Event::Input(_, _) => {}
+            Event::Input(_, _) => {
+                e.mouse_scroll(|scroll_args| {
+                    let transformed_cube = transform_cube_scroll(&mut cube_mesh, &scroll_args);
+                    let polygons = get_polygons_from_mesh(&transformed_cube, &projection);
+                    window.draw_2d(&e, |_c, g, _d| {
+                        clear([1.0, 1.0, 1.0, 1.0], g);
+
+                        for (i, polygon_triangle) in polygons.iter().enumerate() {
+                            polygon(colors[i], polygon_triangle, _c.transform, g);
+                        }
+                    });
+                });
+            }
             Event::Loop(_) => {
-                let transformed_cube = transform_cube(&mut cube_mesh);
-                let projected_triangles = project_mesh(&transformed_cube, &projection);
-                let projected_mesh: Mesh<[Triangle; NUMBER_OF_TRIANGLES]> =
-                    Mesh::from_vector(&projected_triangles);
-                let polygons = get_transformed_mesh(&projected_mesh);
+                let transformed_cube = transform_cube_loop(&mut cube_mesh);
+                let polygons = get_polygons_from_mesh(&transformed_cube, &projection);
                 window.draw_2d(&e, |_c, g, _d| {
                     clear([1.0, 1.0, 1.0, 1.0], g);
 
