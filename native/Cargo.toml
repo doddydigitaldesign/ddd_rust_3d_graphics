@@ -1,0 +1,16 @@
+[package]
+authors = ["Daniel Sonne Lehnberg <doddy@doddy.se>"]
+edition = "2018"
+name = "native"
+version = "0.1.0"
+
+[dependencies]
+camera_controllers = "0.32.0"
+obj-rs = "0.6.2"
+piston = "0.52.0"
+piston2d-graphics = "0.39.0"
+piston2d-opengl_graphics = "0.76.0"
+piston_window = "0.116.0"
+pistoncore-glutin_window = "0.67.0"
+shared = {path = "../shared"}
+vecmath = "1.0.0"

@@ -1,4 +1,5 @@
 #![feature(min_const_generics)]
+#![feature(toowned_clone_into)]
 
 pub mod matrix;
 pub mod mesh;
@@ -7,6 +8,7 @@ pub mod point;
 pub mod traits;
 pub mod triangle;
 pub mod types;
+pub mod utils;
 pub mod window;
 
 pub use matrix::*;
@@ -16,6 +18,7 @@ pub use point::*;
 pub use traits::*;
 pub use triangle::*;
 pub use types::*;
+pub use utils::*;
 pub use window::*;
 
 #[cfg(test)]
