@@ -680,7 +680,6 @@ dependencies = [
  "piston2d-opengl_graphics",
  "piston_window",
  "pistoncore-glutin_window",
- "shared",
  "vecmath",
 ]
 
@@ -1223,16 +1222,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dfadbf7574784ee97f062ace17e1008fb5e7f46dd714b7dd46baf6efebd30e26"
 dependencies = [
  "piston-graphics_api_version",
-]
-
-[[package]]
-name = "shared"
-version = "0.1.0"
-dependencies = [
- "camera_controllers",
- "obj-rs",
- "piston_window",
- "vecmath",
 ]
 
 [[package]]
