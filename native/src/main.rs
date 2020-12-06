@@ -1,6 +1,3 @@
-#![feature(min_const_generics)]
-#![feature(toowned_clone_into)]
-
 extern crate glutin_window;
 extern crate graphics;
 extern crate opengl_graphics;
