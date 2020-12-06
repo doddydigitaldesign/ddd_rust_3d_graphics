@@ -1,6 +1,5 @@
 [workspace]
 members = [
-  "wasm",
-  "native",
-  "shared",
+  # "wasm",
+  "native", # "shared",
 ]
