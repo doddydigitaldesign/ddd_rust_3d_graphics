@@ -1,3 +1,8 @@
+use std::{
+    collections::VecDeque,
+    time::{Duration, Instant},
+};
+
 use graphics::{CharacterCache, Graphics};
 use opengl_graphics::GlGraphics;
 use piston::{Key, RenderArgs, UpdateArgs};
@@ -12,6 +17,8 @@ pub struct App {
     pub(crate) angular_velocity: f64,
     pub(crate) radius: f64,
     pub(crate) color: [f32; 4],
+    pub(crate) fps: usize,
+    pub(crate) last_second_frames: VecDeque<Instant>,
 }
 
 impl App {
@@ -20,6 +27,8 @@ impl App {
         C: CharacterCache<Texture = opengl_graphics::Texture>,
     {
         use graphics::*;
+
+        self.fps = self.tick();
 
         const BLACK: [f32; 4] = [0.0, 0.0, 0.0, 1.0];
         const WHITE: [f32; 4] = [1.0, 1.0, 1.0, 1.0];
@@ -33,6 +42,7 @@ impl App {
         let (_x_screen_mid, _y_screen_mid) = (args.window_size[0] / 2.0, args.window_size[1] / 2.0);
         let [x, y] = self.position;
         let speed = (self.velocity[0].powi(2) + self.velocity[1].powi(2)).sqrt();
+        let fps = self.fps;
 
         self.gl.draw(args.viewport(), |c, gl| {
             // Clear the screen.
@@ -54,36 +64,26 @@ impl App {
             let text_keys_transform = c.transform.trans(100.0, 150.0);
             let text_speed_transform = c.transform.trans(100.0, 200.0);
             let text_position_transform = c.transform.trans(100.0, 250.0);
+            let text_fps_transform = c.transform.trans(100.0, 300.0);
 
-            let text_ball = format!("Drag applied here!");
-            let text_keys =
-                format!("Keybindings: Acceleration - WASD, Break - Spacebar, ESC - Quit");
+            let text_title = "Demo";
+            let text_ball = "Drag applied here!";
+            let text_keys = "Keybindings: Acceleration - WASD, Break - Spacebar, ESC - Quit";
             let text_position = format!("Position x: {} , y: {}", x.round(), y.round());
             let text_speed = format!("Speed: {}", speed.round());
+            let text_fps = format!("FPS: {}", fps);
 
             rectangle(color, square, square_transform, gl);
             ellipse(BALL_COLOR, ball, ball_transform, gl);
 
             graphics::text::Text::new_color(WHITE, 32)
-                .draw("Demo game", glyphs, &c.draw_state, text_title_transform, gl)
+                .draw(text_title, glyphs, &c.draw_state, text_title_transform, gl)
                 .ok();
             graphics::text::Text::new_color(WHITE, 24)
-                .draw(
-                    text_ball.as_str(),
-                    glyphs,
-                    &c.draw_state,
-                    text_ball_transform,
-                    gl,
-                )
+                .draw(text_ball, glyphs, &c.draw_state, text_ball_transform, gl)
                 .ok();
             graphics::text::Text::new_color(WHITE, 24)
-                .draw(
-                    text_keys.as_str(),
-                    glyphs,
-                    &c.draw_state,
-                    text_keys_transform,
-                    gl,
-                )
+                .draw(text_keys, glyphs, &c.draw_state, text_keys_transform, gl)
                 .ok();
             graphics::text::Text::new_color(WHITE, 24)
                 .draw(
@@ -100,6 +100,15 @@ impl App {
                     glyphs,
                     &c.draw_state,
                     text_speed_transform,
+                    gl,
+                )
+                .ok();
+            graphics::text::Text::new_color(WHITE, 24)
+                .draw(
+                    text_fps.as_str(),
+                    glyphs,
+                    &c.draw_state,
+                    text_fps_transform,
                     gl,
                 )
                 .ok();
@@ -197,5 +206,20 @@ impl App {
         if key == Key::Space {
             self.velocity = [v_x / ACCELERATION_FACTOR, v_y / ACCELERATION_FACTOR];
         }
+    }
+    pub fn tick(&mut self) -> usize {
+        let now = Instant::now();
+        let a_second_ago = now - Duration::from_secs(1);
+
+        while self
+            .last_second_frames
+            .front()
+            .map_or(false, |t| *t < a_second_ago)
+        {
+            self.last_second_frames.pop_front();
+        }
+
+        self.last_second_frames.push_back(now);
+        self.last_second_frames.len()
     }
 }

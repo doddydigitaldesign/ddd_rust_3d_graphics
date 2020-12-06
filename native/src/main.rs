@@ -8,6 +8,8 @@ extern crate piston;
 extern crate piston_window;
 extern crate vecmath;
 
+use std::collections::VecDeque;
+
 use glutin_window::GlutinWindow as AppWindow;
 
 use opengl_graphics::*;
@@ -24,7 +26,7 @@ pub(crate) const SCREEN_HEIGHT: f64 = 1080.0;
 pub(crate) const SCREEN_WIDTH: f64 = 1920.0;
 pub(crate) const SCREEN_MID_POINT: [f64; 2] = [SCREEN_HEIGHT / 2.0, SCREEN_WIDTH / 2.0];
 pub(crate) const WINDOW_TITLE: &str = "DDD Rust 3D Graphics";
-pub(crate) const FPS_FACTOR: f64 = 120.0;
+pub(crate) const FPS_FACTOR: f64 = 240.0;
 pub(crate) const MAX_FPS: u64 = 120;
 pub(crate) const ACCELERATION_FACTOR: f64 = 1.1;
 pub(crate) const RADIUS: f64 = 50.0;
@@ -53,15 +55,17 @@ fn main() {
         radius: RADIUS,
         rotation: 0.0,
         velocity: [1.0, 1.0],
+        fps: 0,
+        last_second_frames: VecDeque::with_capacity(128),
     };
 
     let mut events = Events::new(EventSettings {
-        bench_mode: false,  // Default false
-        lazy: false,        // Default false
-        max_fps: MAX_FPS,   // Default 60
-        ups: 120,           // Default 120
-        ups_reset: 2,       // Default 2
-        swap_buffers: true, // Default true
+        bench_mode: false,          // Default false
+        lazy: false,                // Default false
+        max_fps: MAX_FPS,           // Default 60
+        ups: MAX_FPS * 2u64,        // Default 120
+        ups_reset: MAX_FPS / 30u64, // Default 2
+        swap_buffers: true,         // Default true
     });
 
     while let Some(e) = events.next(&mut window) {
