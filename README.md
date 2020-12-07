@@ -2,6 +2,7 @@
 
 # ddd_rust_3d_graphics
 A simple library for drawing 3D meshes 
+![alt Preview](https://raw.githubusercontent.com/doddydigitaldesign/ddd_rust_3d_graphics/master/demo.png)
 
 ### How to run it locally
 1. Clone the repo: ```git clone https://github.com/doddydigitaldesign/ddd_rust_3d_graphics.git```
