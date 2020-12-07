@@ -674,12 +674,14 @@ name = "native"
 version = "0.1.0"
 dependencies = [
  "camera_controllers",
+ "gfx",
  "obj-rs",
  "piston",
  "piston2d-graphics",
  "piston2d-opengl_graphics",
  "piston_window",
  "pistoncore-glutin_window",
+ "shader_version",
  "vecmath",
 ]
 
