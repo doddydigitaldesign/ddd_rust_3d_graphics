@@ -1,7 +1,7 @@
 [![Rust](https://github.com/doddydigitaldesign/ddd_rust_3d_graphics/workflows/Rust/badge.svg)](https://github.com/doddydigitaldesign/ddd_rust_3d_graphics/actions)
 
 # ddd_rust_3d_graphics
-A simple library for drawing 3D meshes 
+A simple 3D rendering of an .obj file using Rust and OpenGL. 
 ![alt Preview](https://raw.githubusercontent.com/doddydigitaldesign/ddd_rust_3d_graphics/master/demo.png)
 
 ### How to run it locally
