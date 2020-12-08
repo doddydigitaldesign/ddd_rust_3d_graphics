@@ -4,6 +4,6 @@ out vec4 o_Color;
 uniform sampler2D t_color;
 void main() {
     vec4 tex = texture(t_color, v_TexCoord);
-    float blend = dot(v_TexCoord-vec2(0.5,0.5), v_TexCoord-vec2(0.5,0.5));
-    o_Color = mix(tex, vec4(0.5,0.5,0.5,0.5), blend*1.0);
+    float blend = dot(v_TexCoord-vec2(0.5, 0.5), v_TexCoord-vec2(0.5,0.5));
+    o_Color = mix(tex, vec4(0.5,0.75,0.75,1.0), blend*0.5);
 }

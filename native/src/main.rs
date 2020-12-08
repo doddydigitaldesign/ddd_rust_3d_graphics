@@ -13,7 +13,7 @@ use camera_controllers::{
     model_view_projection, CameraPerspective, FirstPerson, FirstPersonSettings,
 };
 use gfx::traits::*;
-use graphics::color::WHITE;
+// use graphics::color::WHITE;
 use obj::*;
 use opengl_graphics::*;
 use piston::input::*;
@@ -52,7 +52,7 @@ gfx_pipeline!( pipe {
 });
 
 fn get_glowing_cube_obj() -> Obj {
-    let file = File::open("native/assets/glowing_cube.obj").unwrap();
+    let file = File::open("native/assets/asset.obj").unwrap();
     let input = BufReader::new(file);
     let model: Obj = load_obj(input).unwrap();
 
@@ -84,10 +84,10 @@ fn main() {
     let (vbuf, slice) = factory.create_vertex_buffer_with_slice(&vertex_data, index_data);
 
     let texels = [
-        [0xff, 0xff, 0xff, 0x00],
-        [0xff, 0x00, 0xff, 0x00],
+        [0xff, 0x00, 0x00, 0xff],
         [0x00, 0xff, 0x00, 0xff],
-        [0xff, 0x00, 0xff, 0x00],
+        [0x00, 0x00, 0xff, 0xff],
+        [0x00, 0x00, 0x00, 0xff],
     ];
     let (_, texture_view) = factory
         .create_texture_immutable::<gfx::format::Rgba8>(
@@ -106,14 +106,12 @@ fn main() {
     let pipeline_state = factory
         .create_pipeline_simple(
             Shaders::new()
-                .set(GLSL::V1_20, include_str!("../assets/cube_120.glslv"))
-                .set(GLSL::V1_50, include_str!("../assets/cube_150.glslv"))
+                .set(GLSL::V1_50, include_str!("../assets/asset_150.glslv"))
                 .get(glsl)
                 .unwrap()
                 .as_bytes(),
             Shaders::new()
-                .set(GLSL::V1_20, include_str!("../assets/cube_120.glslf"))
-                .set(GLSL::V1_50, include_str!("../assets/cube_150.glslf"))
+                .set(GLSL::V1_50, include_str!("../assets/asset_150.glslf"))
                 .get(glsl)
                 .unwrap()
                 .as_bytes(),
